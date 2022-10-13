@@ -1,115 +1,319 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MaterialApp(home: const HomePage(), routes: <String, WidgetBuilder>{
+    "/HomePage": (BuildContext context) => const HomePage(),
+    "/createNew": (BuildContext context) => const createNew(),
+    "/editExisting": (BuildContext context) => const editExisting(),
+    "/repository":(BuildContext context) => const repository(),
+
+  }));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+//first page
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  _HomePage createState() => _HomePage();
+}
+
+class _HomePage extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+        appBar: AppBar(
+            title: const Text("D&D Magic Item Creator"),
+            backgroundColor: Colors.red),
+        body: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          children: [
+            Center(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      const Text("\nD&D Magic Item Creator",
+                          style: TextStyle(fontSize: 24.0)),
+                      const Divider(
+                          height: 20, thickness: 5, color: Colors.blue),
+                      const Text("Create New Item"),
+                      IconButton(
+                          icon: const Icon(Icons.add, color: Colors.red),
+                          iconSize: 70,
+                          onPressed: () {
+                            Navigator.of(context).pushNamed("/createNew");
+                          }),
+                      const Text("Edit Existing Item"),
+                      IconButton(
+                          icon: const Icon(Icons.edit, color: Colors.yellow),
+                          iconSize: 70,
+                          onPressed: () {
+                            Navigator.of(context).pushNamed("/editExisting");
+                          }),
+                      const Text("Item Repository"),
+                      IconButton(
+                          icon: const Icon(
+                              Icons.folder, color: Colors.orangeAccent),
+                          iconSize: 70,
+                          onPressed: () {
+                            Navigator.of(context).pushNamed("/repository");
+                          })
+                    ]))
           ],
-        ),
+        ));
+  }
+
+
+}
+
+
+class newItem {
+
+  String itemName ="";
+  String itemRarity ="";
+  String itemType = "";
+  String itemAttunement = "";
+  String itemCost = "";
+  String itemText = "";
+
+  newItem(this.itemName, this.itemRarity, this.itemType, this.itemAttunement, this.itemCost,this.itemText);
+
+}
+
+
+
+//2nd page
+class createNew extends StatefulWidget {
+  const createNew({Key? key}) : super(key: key);
+
+  @override
+  _createNew createState() => _createNew();
+}
+
+
+//THIS MIGHT NEED TO BE IN A DIFFERENT CLASS??
+//IDK MIGHT BE BETTER OUT HERE ON IT'S OWN
+class _createNew extends State<createNew> {
+
+  static TextEditingController controller1 = TextEditingController();
+  static TextEditingController controller2 = TextEditingController();
+  static TextEditingController controller3 = TextEditingController();
+  static TextEditingController controller4 = TextEditingController();
+  static TextEditingController controller5 = TextEditingController();
+  static TextEditingController controller6 = TextEditingController();
+
+
+  void dispose() {
+    controller1.dispose();
+    controller2.dispose();
+    controller3.dispose();
+    controller4.dispose();
+    controller5.dispose();
+    controller6.dispose();
+  }
+
+  newItem _submit(){
+
+    newItem newSubmisson = new newItem(controller1.text!, controller2.text!, controller3.text!,
+        controller4.text!, controller5.text!, controller6.text!);
+
+    //FIGURE OUT HOW TO RETURN AN OBJECT HOW YOU WANT IT TO
+    return{
+      newSubmisson
+    };
+
+  }
+
+  Widget entry1 = Row(
+
+    crossAxisAlignment: CrossAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.end,
+    textBaseline: TextBaseline.alphabetic,
+    children: <Widget>[
+      Text("Item Name:"),
+      Container(
+          width: 150.0,
+          height: 60.0,
+          padding: EdgeInsets.all(5.0),
+          child: TextField(
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: "name ",
+            ),
+
+            controller: controller1,
+            keyboardType: TextInputType.text,
+          ))
+    ],
+  );
+//1st text entry field
+
+  Widget entry2 = Row(
+
+    crossAxisAlignment: CrossAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.end,
+    textBaseline: TextBaseline.alphabetic,
+    children: <Widget>[
+      Text("Item Rarity:"),
+      Container(
+          width: 150.0,
+          height: 60.0,
+          padding: EdgeInsets.all(5.0),
+          child: TextField(
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: "Rarity ",
+            ),
+
+            controller: controller2,
+            keyboardType: TextInputType.text,
+          ))
+    ],
+  );
+//2nd text entry field
+
+  Widget entry3 = Row(
+
+    crossAxisAlignment: CrossAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.end,
+    textBaseline: TextBaseline.alphabetic,
+    children: <Widget>[
+      Text("Item Type:"),
+      Container(
+          width: 150.0,
+          height: 60.0,
+          padding: EdgeInsets.all(5.0),
+          child: TextField(
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: "Type ",
+            ),
+
+            controller: controller3,
+            keyboardType: TextInputType.text,
+          ))
+    ],
+  );
+//3rd text entry field
+
+  Widget entry4 = Row(
+
+    crossAxisAlignment: CrossAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.end,
+    textBaseline: TextBaseline.alphabetic,
+    children: <Widget>[
+      Text("Item Attunement:"),
+      Container(
+          width: 150.0,
+          height: 60.0,
+          padding: EdgeInsets.all(5.0),
+          child: TextField(
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: "name ",
+            ),
+
+            controller: controller4,
+            keyboardType: TextInputType.text,
+          ))
+    ],
+  );
+//4ths text entry field
+
+  Widget entry5 = Row(
+
+    crossAxisAlignment: CrossAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.end,
+    textBaseline: TextBaseline.alphabetic,
+    children: <Widget>[
+      Text("Item Cost:"),
+      Container(
+          width: 150.0,
+          height: 60.0,
+          padding: EdgeInsets.all(5.0),
+          child: TextField(
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: "Cost ",
+            ),
+
+            controller: controller5,
+            keyboardType: TextInputType.text,
+          ))
+    ],
+  );
+//5th text entry field
+
+  Widget entry6 = Row(
+
+    crossAxisAlignment: CrossAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.end,
+    textBaseline: TextBaseline.alphabetic,
+    children: <Widget>[
+      Text("Item Text:"),
+      Container(
+          width: 150.0,
+          height: 60.0,
+          padding: EdgeInsets.all(5.0),
+          child: TextField(
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: "rules go here ",
+            ),
+
+            controller: controller6,
+            keyboardType: TextInputType.text,
+          ))
+    ],
+  );
+//6th text entry field
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Create a new Item")),
+      body: Container(
+        padding: EdgeInsets.all(20.0),
+        color: Colors.white,
+        child:  Column(
+          children: [
+            Expanded(child: entry1),
+            Expanded(child: entry2),
+            Expanded(child: entry3),
+            Expanded(child: entry4),
+            Expanded(child: entry5),
+            Expanded(child: entry6),
+
+           ])
+         ),
+
+      bottomNavigationBar: BottomAppBar(
+        shape: const CircularNotchedRectangle(),
+        child: Container(height: 50.0),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        onPressed: () =>
+            setState(() {
+              _submit();
+              FocusManager.instance.primaryFocus?.unfocus();
+            }),
+        tooltip: 'Submit button',
+
+        child: const Icon(Icons.subdirectory_arrow_right_outlined),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
-  }
+    }
 }
+
+
+
+
+//MAKE EDIT PAGE
+
+
+//MAKE REPOSITORY PAGE
