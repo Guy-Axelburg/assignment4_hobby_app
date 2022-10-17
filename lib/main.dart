@@ -27,42 +27,52 @@ class _HomePage extends State<HomePage> {
         appBar: AppBar(
             title: const Text("D&D Magic Item Creator"),
             backgroundColor: Colors.red),
-        body: ListView(
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(image: AssetImage("images/d20.png"), fit: BoxFit.contain),
+          ),
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: ListView(
           children: [
             Center(
+
                 child: Column(
+
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      const Text("\nD&D Magic Item Creator",
+                      const Text("\nMain Menu",
                           style: TextStyle(fontSize: 24.0)),
+
                       const Divider(
-                          height: 20, thickness: 5, color: Colors.blue),
-                      const Text("Create New Item"),
+                          height: 20, thickness: 1, color: Colors.blue),
+
                       IconButton(
                           icon: const Icon(Icons.add, color: Colors.red),
                           iconSize: 70,
                           onPressed: () {
                             Navigator.of(context).pushNamed("/createNew");
                           }),
-                      const Text("Edit Existing Item"),
+                      const Text("Create New Item"),
+
                       IconButton(
                           icon: const Icon(Icons.edit, color: Colors.yellow),
                           iconSize: 70,
                           onPressed: () {
                             Navigator.of(context).pushNamed("/editExisting");
                           }),
-                      const Text("Item Repository"),
+                      const Text("Edit Existing Item"),
+
                       IconButton(
                           icon: const Icon(
                               Icons.folder, color: Colors.orangeAccent),
                           iconSize: 70,
                           onPressed: () {
                             Navigator.of(context).pushNamed("/repository");
-                          })
+                          }),
+                      const Text("Item Repository"),
                     ]))
           ],
-        ));
+          ) ));
   }
 
 
@@ -105,31 +115,67 @@ class _createNew extends State<createNew> {
   static TextEditingController controller6 = TextEditingController();
 
 
-  void dispose() {
-    controller1.dispose();
-    controller2.dispose();
-    controller3.dispose();
-    controller4.dispose();
-    controller5.dispose();
-    controller6.dispose();
-  }
 
-  newItem _submit(){
 
-    newItem newSubmisson = new newItem(controller1.text!, controller2.text!, controller3.text!,
-        controller4.text!, controller5.text!, controller6.text!);
+  Set<newItem> _submit(){
+
+    newItem newSubmisson = new newItem(controller1.text, controller2.text, controller3.text,
+        controller4.text, controller5.text, controller6.text);
 
     //FIGURE OUT HOW TO RETURN AN OBJECT HOW YOU WANT IT TO
     return{
       newSubmisson
+
     };
 
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Create a new Item")),
+
+      body: Container(
+          decoration: const BoxDecoration( color: Colors.white,
+
+            image: DecorationImage(image: AssetImage("images/pennquill.jpg"), fit: BoxFit.cover),
+          ),
+          padding: EdgeInsets.all(20.0),
+
+          child:  Column(
+              children: [
+
+                Expanded(child: entry1),
+                Expanded(child: entry2),
+                Expanded(child: entry3),
+                Expanded(child: entry4),
+                Expanded(child: entry5),
+                Expanded(child: entry6),
+
+              ])
+      ),
+
+      bottomNavigationBar: BottomAppBar(
+        shape: const CircularNotchedRectangle(),
+        child: Container(height: 50.0),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () =>
+            setState(() {
+              _submit();
+              FocusManager.instance.primaryFocus?.unfocus();
+            }),
+        tooltip: 'Submit button',
+
+        child: const Icon(Icons.subdirectory_arrow_right_outlined),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    );
+  }
   Widget entry1 = Row(
 
     crossAxisAlignment: CrossAxisAlignment.center,
-    mainAxisAlignment: MainAxisAlignment.end,
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
     textBaseline: TextBaseline.alphabetic,
     children: <Widget>[
       Text("Item Name:"),
@@ -137,12 +183,8 @@ class _createNew extends State<createNew> {
           width: 150.0,
           height: 60.0,
           padding: EdgeInsets.all(5.0),
-          child: TextField(
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: "name ",
-            ),
-
+          child: TextField(maxLines: 8, //or null
+            decoration: InputDecoration.collapsed( border: OutlineInputBorder(), hintText: "Enter your text here"),
             controller: controller1,
             keyboardType: TextInputType.text,
           ))
@@ -153,7 +195,7 @@ class _createNew extends State<createNew> {
   Widget entry2 = Row(
 
     crossAxisAlignment: CrossAxisAlignment.center,
-    mainAxisAlignment: MainAxisAlignment.end,
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
     textBaseline: TextBaseline.alphabetic,
     children: <Widget>[
       Text("Item Rarity:"),
@@ -177,7 +219,7 @@ class _createNew extends State<createNew> {
   Widget entry3 = Row(
 
     crossAxisAlignment: CrossAxisAlignment.center,
-    mainAxisAlignment: MainAxisAlignment.end,
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
     textBaseline: TextBaseline.alphabetic,
     children: <Widget>[
       Text("Item Type:"),
@@ -201,7 +243,7 @@ class _createNew extends State<createNew> {
   Widget entry4 = Row(
 
     crossAxisAlignment: CrossAxisAlignment.center,
-    mainAxisAlignment: MainAxisAlignment.end,
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
     textBaseline: TextBaseline.alphabetic,
     children: <Widget>[
       Text("Item Attunement:"),
@@ -225,7 +267,7 @@ class _createNew extends State<createNew> {
   Widget entry5 = Row(
 
     crossAxisAlignment: CrossAxisAlignment.center,
-    mainAxisAlignment: MainAxisAlignment.end,
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
     textBaseline: TextBaseline.alphabetic,
     children: <Widget>[
       Text("Item Cost:"),
@@ -249,7 +291,7 @@ class _createNew extends State<createNew> {
   Widget entry6 = Row(
 
     crossAxisAlignment: CrossAxisAlignment.center,
-    mainAxisAlignment: MainAxisAlignment.end,
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
     textBaseline: TextBaseline.alphabetic,
     children: <Widget>[
       Text("Item Text:"),
@@ -271,43 +313,15 @@ class _createNew extends State<createNew> {
 //6th text entry field
 
 
+  void dispose() {
+    controller1.dispose();
+    controller2.dispose();
+    controller3.dispose();
+    controller4.dispose();
+    controller5.dispose();
+    controller6.dispose();
+  }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Create a new Item")),
-      body: Container(
-        padding: EdgeInsets.all(20.0),
-        color: Colors.white,
-        child:  Column(
-          children: [
-            Expanded(child: entry1),
-            Expanded(child: entry2),
-            Expanded(child: entry3),
-            Expanded(child: entry4),
-            Expanded(child: entry5),
-            Expanded(child: entry6),
-
-           ])
-         ),
-
-      bottomNavigationBar: BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        child: Container(height: 50.0),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () =>
-            setState(() {
-              _submit();
-              FocusManager.instance.primaryFocus?.unfocus();
-            }),
-        tooltip: 'Submit button',
-
-        child: const Icon(Icons.subdirectory_arrow_right_outlined),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-    );
-    }
 }
 
 
@@ -315,5 +329,81 @@ class _createNew extends State<createNew> {
 
 //MAKE EDIT PAGE
 
+//2nd page
+class editExisting extends StatefulWidget {
+  const editExisting({Key? key}) : super(key: key);
+
+  @override
+  _editExisting createState() => _editExisting();
+}
+
+
+//THIS MIGHT NEED TO BE IN A DIFFERENT CLASS??
+//IDK MIGHT BE BETTER OUT HERE ON IT'S OWN
+class _editExisting extends State<createNew> {
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(title: Text("Edit Existing Item")),
+        body: Container(
+          decoration: const BoxDecoration(     color: Colors.white,
+              image: DecorationImage(image: AssetImage("images/construction.jpg"), fit: BoxFit.cover)),
+            padding: EdgeInsets.all(20.0),
+
+            child: Column(
+                children: [
+                  Text("Under Construction!"),
+
+
+
+                ]
+            )
+        ));
+  }
+}
+
+
+
+
 
 //MAKE REPOSITORY PAGE
+
+
+//3rd page
+  class repository extends StatefulWidget {
+  const repository({Key? key}) : super(key: key);
+
+  @override
+  _repository createState() => _repository();
+  }
+
+
+//THIS MIGHT NEED TO BE IN A DIFFERENT CLASS??
+//IDK MIGHT BE BETTER OUT HERE ON IT'S OWN
+  class _repository extends State<createNew> {
+
+
+
+  @override
+  Widget build(BuildContext context) {
+  return Scaffold(
+  appBar: AppBar(title: Text("Repository")),
+  body: Container(
+    decoration: const BoxDecoration(  color: Colors.white,
+        image: DecorationImage(image: AssetImage("images/scroll.jpg"), fit: BoxFit.cover)),
+  padding: EdgeInsets.all(20.0),
+
+  child:  Column(
+  children: [
+  Text("Under Construction!"),
+  ],
+
+  ),
+
+  ),
+
+    );
+
+  }}
